@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
-from backend.logggerrr import setup_logger
+from logggerrr import setup_logger
 from model.model_api import generate_summary
 
 app = FastAPI()
