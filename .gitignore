@@ -1,1 +1,4 @@
 .venv
+backend.log
+model.log
+test.py
