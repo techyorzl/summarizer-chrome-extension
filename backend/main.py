@@ -1,12 +1,17 @@
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import requests
-
-from logggerrr import setup_logger
 
 app = FastAPI()
 
-logger = setup_logger('backend', 'backend.log')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 MODEL_API_URL = "http://model:5000"
 
@@ -23,8 +28,7 @@ async def summarize_text(request: TextRequest):
         if response.status_code != 200:
             raise HTTPException(status_code=500, detail="Model server error")
 
-        return {"summary": response.json()}
+        return response.json()
     
     except Exception as e:
-        logger.error(f"Error processing request: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
