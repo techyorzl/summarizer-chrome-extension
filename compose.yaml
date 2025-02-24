@@ -12,3 +12,7 @@ services:
       - MODEL_API_URL=http://model:5000
     depends_on:
       - model
+
+networks:
+  summarizer_network:
+    driver: bridge
