@@ -18,13 +18,14 @@ class TextReq(BaseModel):
     text: str
 
 @app.post("/generate_summary")
-async def generate_summary(text: str):
+async def generate_summary(request: TextReq):
     if not summarizer:
         raise RuntimeError("Model is not loaded properly!")
     
     try:
+        text = request.text
         text_len = len(text.split())
-        max_tokens = int(max(0.3 * text_len, 150))
+        max_tokens = min(int(max(0.3 * text_len, 150)), text_len)
 
         summary = summarizer(text, max_length=max_tokens, min_length=int(max_tokens * 0.5), do_sample=False)
         return {"summary": summary[0]["summary_text"]}
